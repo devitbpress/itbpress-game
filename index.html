@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isi Energi Qubit: Quantum Finance</title>
+<style>
+  :root {
+    --bg: #F6F4EF;
+    --card: #FFFFFF;
+    --border: #E3E0D6;
+    --border-strong: #C9C5B7;
+    --text: #23221E;
+    --text-secondary: #6B6A62;
+    --track: #ECE9DF;
+    --success: #1D9E75;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px 16px 64px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 560px; }
+  h1 {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 4px;
+  }
+  .lede {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0 0 24px;
+  }
+  .tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .tab {
+    flex: 1;
+    min-width: 90px;
+    padding: 10px 6px;
+    font-size: 13px;
+    border-radius: 10px;
+    border: 0.5px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .tab.active { border: 2px solid var(--border-strong); }
+  .tab:disabled { opacity: 0.45; cursor: not-allowed; }
+  .tab .mark { font-size: 16px; line-height: 1; }
+  .stage {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+  .stage .level-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .stage h2 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+  }
+  .status {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .bar-track {
+    width: 220px;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--track);
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    transition: width 0.25s ease;
+  }
+  button.feed {
+    margin-top: 4px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 0.5px solid var(--border-strong);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+  }
+  button.feed:active { transform: scale(0.98); }
+  button.next {
+    margin-top: 14px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 0.5px solid var(--border-strong);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+  }
+  .content-card {
+    margin-top: 20px;
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 22px;
+  }
+  .content-card .unlocked-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 10px;
+  }
+  .content-card ul {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .done-msg { font-size: 14px; color: var(--text-secondary); margin-top: 14px; }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1B1A17;
+      --card: #242320;
+      --border: #38362F;
+      --border-strong: #4E4B41;
+      --text: #F1EFE8;
+      --text-secondary: #A8A69C;
+      --track: #322F29;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Quantum finance: isi energi lima qubit</h1>
+  <p class="lede">Isi energi qubit di tiap level sampai penuh untuk membuka ringkasan materinya.</p>
+  <div class="tabs" id="tabs"></div>
+  <div class="stage" id="stage"></div>
+  <div id="content"></div>
+</div>
+
+<script>
+const LEVELS = [
+  {
+    title: "Asal mula quantum computing",
+    name: "Feynman",
+    color: "#7F77DD",
+    colorDark: "#3C3489",
+    narrative: "Gagasan quantum computing pertama kali muncul dari Richard Feynman di awal 1980-an, lalu diperkuat secara teoretis oleh David Deutsch. Bedanya dengan komputer biasa, quantum computing memakai qubit yang bisa berada dalam banyak keadaan sekaligus lewat superposisi, dan saling terhubung lewat entanglement. Karena itu, teknologi ini secara teoretis unggul untuk soal-soal seperti optimasi kombinatorial, simulasi probabilistik, dan kriptografi. Minat terhadap quantum computing pun sudah jadi agenda strategis banyak negara, mulai dari National Quantum Initiative di Amerika Serikat, Quantum Flagship di Uni Eropa, sampai program nasional Jepang dan Tiongkok."
+  },
+  {
+    title: "Relevansi bagi industri keuangan",
+    name: "Portofolio",
+    color: "#1D9E75",
+    colorDark: "#0F6E56",
+    narrative: "Selama dua dekade terakhir, kapasitas komputasi jadi penentu utama dalam manajemen risiko, penetapan harga instrumen kompleks, dan pengambilan keputusan investasi. Karena itu sejumlah lembaga keuangan besar mulai menjajal quantum computing lebih serius. JPMorgan Chase, misalnya, bekerja sama dengan IBM Quantum untuk menguji algoritma optimasi portofolio berbasis quantum, sementara Goldman Sachs dan HSBC mengeksplorasi penggunaannya untuk simulasi risiko dan pricing instrumen kompleks. Meski begitu, teknologi ini masih di tahap eksperimental, karena jumlah qubit yang tersedia masih terbatas dan tingkat error-nya masih tinggi, sehingga penerapannya belum bisa dilakukan dalam skala penuh."
+  },
+  {
+    title: "Risiko asimetri akses",
+    name: "Neraca",
+    color: "#D85A30",
+    colorDark: "#993C1D",
+    narrative: "Mengembangkan dan memanfaatkan quantum computing bukan perkara murah, karena butuh investasi besar untuk infrastruktur, kemitraan riset, dan talenta dengan kompetensi yang sangat spesifik. Negara-negara seperti Amerika Serikat, Tiongkok, dan beberapa anggota Uni Eropa sudah mengalokasikan dana publik dalam skala besar, sementara banyak negara berkembang masih ada di tahap awal membangun ekosistem quantum-nya. Kesenjangan ini berisiko membuat institusi keuangan besar yang punya modal dan akses jaringan global bisa lebih dulu memetik manfaat quantum advantage, sehingga pasar berpotensi makin terkonsentrasi. Dalam kerangka hukum sektor keuangan, situasi ini memunculkan pertanyaan soal level playing field, prinsip yang ditekankan dalam Basel Core Principles for Effective Banking Supervision agar regulasi tidak secara struktural menguntungkan kelompok pelaku tertentu."
+  },
+  {
+    title: "Risiko sistemik dan tata kelola model",
+    name: "Sistemik",
+    color: "#EF9F27",
+    colorDark: "#854F0B",
+    narrative: "Dari sisi stabilitas sistem keuangan, konsentrasi kapasitas komputasi tidak bisa dipandang semata sebagai soal persaingan bisnis. Bank for International Settlements sendiri menilai risiko sistemik suatu institusi dari ukuran, tingkat keterkaitan, kompleksitas aktivitas, dan keterbatasan substitutabilitasnya. Financial Stability Board pun menegaskan bahwa teknologi baru bisa menjadi sumber risiko yang memerlukan pengawasan yang adaptif. Ada juga risiko lain yang lebih halus, yaitu kalau banyak institusi memakai pendekatan optimasi dan model risiko berbasis quantum yang serupa, responsnya terhadap tekanan pasar bisa jadi seragam, dan ini justru bisa mempercepat penyebaran guncangan serta memperdalam volatilitas. Karena itu, Basel Committee lewat prinsip manajemen risiko model menekankan pentingnya governance dan validasi independen untuk model-model yang makin kompleks ini."
+  },
+  {
+    title: "Perdebatan dan arah kebijakan",
+    name: "Kompas",
+    color: "#D4537E",
+    colorDark: "#993556",
+    narrative: "Perdebatan soal quantum computing di sektor keuangan sebenarnya bersifat dua arah. Di satu sisi, kalau digunakan dengan baik, quantum advantage bisa memperkuat ketahanan sistem keuangan lewat simulasi yang lebih akurat dan deteksi dini terhadap potensi krisis. Tapi di sisi lain, ada risiko nyata seperti biaya investasi yang tinggi, ketidakpastian teknis, potensi konsentrasi pasar, dan munculnya supervisory gap kalau kapasitas regulator tidak berkembang secepat teknologinya. Karena itu, pendekatan kebijakan yang dibutuhkan bersifat adaptif, mulai dari membangun literasi teknologi di kalangan regulator, memantau dampak adopsi quantum terhadap struktur pasar, sampai mendorong kolaborasi riset antara sektor publik dan swasta. Bagi Indonesia sendiri, sektor keuangan yang makin terdigitalisasi dan terhubung dengan pasar global membuat kesiapan regulasi soal quantum computing ini penting untuk disiapkan sejak awal."
+  }
+];
+
+let current = 0;
+let progress = LEVELS.map(() => 0);
+let unlocked = LEVELS.map((_, i) => i === 0);
+let done = LEVELS.map(() => false);
+
+const tabsEl = document.getElementById("tabs");
+const stageEl = document.getElementById("stage");
+const contentEl = document.getElementById("content");
+
+function renderTabs() {
+  tabsEl.innerHTML = "";
+  LEVELS.forEach((lv, i) => {
+    const btn = document.createElement("button");
+    btn.className = "tab" + (i === current ? " active" : "");
+    const locked = !unlocked[i];
+    btn.disabled = locked;
+    const mark = locked ? "&#128274;" : (done[i] ? "&#10003;" : "&#9883;");
+    btn.innerHTML = '<span class="mark">' + mark + '</span><span>Level ' + (i + 1) + '</span>';
+    btn.onclick = () => { if (!locked) { current = i; renderAll(); } };
+    tabsEl.appendChild(btn);
+  });
+}
+
+function orbSVG(lv, fullness) {
+  const coreOpacity = fullness >= 100 ? 1 : (fullness >= 50 ? 0.65 : 0.3);
+  const ringDash = fullness >= 100 ? "0" : (fullness >= 50 ? "6 4" : "3 7");
+  const ringOpacity = fullness >= 100 ? 1 : 0.5;
+  const glow = fullness >= 100
+    ? '<circle cx="100" cy="100" r="70" fill="' + lv.color + '" opacity="0.12"/>'
+    : '';
+  const eyeShape = fullness >= 100
+    ? '<path d="M 82 96 Q 89 90 96 96" stroke="' + lv.colorDark + '" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M 104 96 Q 111 90 118 96" stroke="' + lv.colorDark + '" stroke-width="4" fill="none" stroke-linecap="round"/>'
+    : '<circle cx="89" cy="98" r="4.5" fill="' + lv.colorDark + '"/><circle cx="111" cy="98" r="4.5" fill="' + lv.colorDark + '"/>';
+  const mouthPath = fullness >= 100
+    ? "M 88 112 Q 100 122 112 112"
+    : (fullness >= 50 ? "M 90 112 Q 100 117 110 112" : "M 92 112 L 108 112");
+  return '<svg width="180" height="180" viewBox="0 0 200 200" role="img" aria-label="Ilustrasi qubit ' + lv.name + '">' +
+    glow +
+    '<circle cx="100" cy="100" r="80" fill="none" stroke="' + lv.color + '" stroke-width="2" stroke-dasharray="' + ringDash + '" opacity="' + ringOpacity + '"/>' +
+    '<circle cx="100" cy="20" r="6" fill="' + lv.color + '" opacity="' + ringOpacity + '"/>' +
+    '<circle cx="100" cy="180" r="6" fill="' + lv.color + '" opacity="' + ringOpacity + '"/>' +
+    '<circle cx="100" cy="100" r="50" fill="' + lv.color + '" opacity="' + coreOpacity + '"/>' +
+    eyeShape +
+    '<path d="' + mouthPath + '" stroke="' + lv.colorDark + '" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    '</svg>';
+}
+
+function renderStage() {
+  const lv = LEVELS[current];
+  const p = progress[current];
+  stageEl.innerHTML =
+    '<p class="level-label">Level ' + (current + 1) + ' dari ' + LEVELS.length + '</p>' +
+    '<h2>' + lv.title + '</h2>' +
+    orbSVG(lv, p) +
+    '<p class="status">Qubit ' + lv.name + (p >= 100 ? " sudah berenergi penuh." : " masih butuh energi.") + '</p>' +
+    '<div class="bar-track"><div class="bar-fill" style="width:' + p + '%;background:' + lv.color + '"></div></div>' +
+    (p < 100 ? '<button class="feed" id="feedBtn">&#9889; Isi energi</button>' : '');
+  const feedBtn = document.getElementById("feedBtn");
+  if (feedBtn) {
+    feedBtn.onclick = () => {
+      progress[current] = Math.min(100, progress[current] + 25);
+      if (progress[current] >= 100) {
+        done[current] = true;
+        if (current + 1 < LEVELS.length) unlocked[current + 1] = true;
+      }
+      renderAll();
+    };
+  }
+}
+
+function renderContent() {
+  const lv = LEVELS[current];
+  const p = progress[current];
+  if (p < 100) { contentEl.innerHTML = ""; return; }
+  const nextAvailable = current + 1 < LEVELS.length;
+  contentEl.innerHTML =
+    '<div class="content-card">' +
+      '<p class="unlocked-label">Materi terbuka</p>' +
+      '<p style="margin:0;font-size:14px;line-height:1.7">' + lv.narrative + '</p>' +
+      (nextAvailable
+        ? '<button class="next" id="nextBtn">Lanjut ke level ' + (current + 2) + ' &rarr;</button>'
+        : '<p class="done-msg">Semua level selesai, semua qubit berenergi penuh.</p>') +
+    '</div>';
+  const nextBtn = document.getElementById("nextBtn");
+  if (nextBtn) nextBtn.onclick = () => { current += 1; renderAll(); };
+}
+
+function renderAll() {
+  renderTabs();
+  renderStage();
+  renderContent();
+}
+
+renderAll();
+</script>
+</body>
+</html>
